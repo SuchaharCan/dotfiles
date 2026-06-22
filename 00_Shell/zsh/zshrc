@@ -1,0 +1,282 @@
+#
+
+
+#~/.zshrc (Tahoe Mac mini - songhoujin)
+# ⭐✅ 更高级的配置 忘记在哪个配置文件了.需要手动寻找
+# ZSH 启动时,自动加载的核心配置文件,在用户主目录下, 负责初始化交互式shell环境.
+# 按照 顺序执行其中 定义的[环境变量设置] [别名声明] [函数定义] [模块加载] [路径配置] , 直接影响终端的行为逻辑 与 使用效率.
+# 加载时机:[登录后由ZSH 自动解析]
+# for i in {1..5}; do /usr/bin/time zsh -i -c exit; done  #测试Shell 启动速度命令
+# hyperfine --warmup 3 'zsh -i -c exit'  #测试终端模拟器性能
+# zsh -ixc exit 2>&1 | ts -i '%.s' | sort -rn | head -20  #使用时间戳跟踪整个启动过程
+
+
+#存放最顶部 ，开启zsh性能分析器
+#zmodload zsh/zprof
+# =========================== 1. 抢先加载与性能优化 性能优化 (保持在第一行)===========================
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# =========================== 2. 预初始化 Homebrew (防止后续组件找不到 brew) ===========================
+# 最标准、能自动 Homebrew 各种底层依赖、MANPATH、INFOPATH 织入最头部的官方初始化命令 eval "$(/opt/homebrew/bin/brew shellenv)" 显式调用
+if [ -x /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+# =========================== 3. Oh My Zsh 核心框架初始化 (必须先于个人 PATH 加载) ===========================
+export ZSH="$HOME/.oh-my-zsh"
+plugins=(z git history brew sudo colored-man-pages autojump)
+
+# 此时加载 OMZ，让它先去初始化系统环境、洗牌基础 PATH
+source $ZSH/oh-my-zsh.sh
+# =========================== 4. 路径初始化与自定义别名/函数 (压轴加载，确保最高优先级) ===========================
+typeset -U path fpath  # 路径去重
+
+
+# 加载你的个人细分路径（此时注入的 PATH 会在最头部，绝对不会被 OMZ 覆盖）
+if [ -d ~/.zsh/paths ]; then
+    for path_file in ~/.zsh/paths/*.sh; do
+        source "$path_file"
+    done
+fi
+# # 🔥【压轴提前】：在 compinit 运行前，先把你的自定义函数（包含 cs 和补全脚本）全部载入内存
+if [ -d ~/.zsh/functions ]; then
+    for func in ~/.zsh/functions/*.zsh; do
+        source "$func"
+    done
+fi
+
+
+# =========================== 5. 补全与高级增强插件加载 ===========================
+# 1. 首先注入你个人的自定义补全路径（最高优先级）
+fpath=(~/.zsh/zsh-completions/src $fpath)  # 第一大类：常见 内置命令
+
+
+# 2. 如果检测到 brew，注入 Homebrew 的各类补全路径 第二大类如果存在 Zsh 补全脚本的话
+if type brew &>/dev/null; then
+    # 获取 brew 根路径，避免多次调用 brew --prefix 降低速度
+    local brew_prefix=$(brew --prefix)
+
+    # 将 yabai等 所在的 site-functions 和 zsh-completions 依次注入 fpath
+    fpath=(
+        $brew_prefix/share/zsh/site-functions  # 这是 yabai、rm-safely 等独立软件通过 Homebrew 安装时，存放补全脚本的黄金位置
+        $brew_prefix/share/zsh-completions
+        $fpath
+    )
+
+    # 3. 执行你高效的 compinit 缓存检查逻辑
+    # 注意：必须在所有 fpath 确定好之后，再执行 compinit
+    #  确保 compinit 已初始化 (fzf-tab 依赖它)
+    # compinit在典型的 shell 中，这是最昂贵的操作之一 每次打开 shell 时，它都会对每个补全文件进行安全审计。
+    # 解决方法是，仅当缓存（.zcompdump）超过 24 小时时才执行完整运行，否则跳过检查-C
+    # 该全局限定符（#qNmh-24）的意思是“存在且在过去 24 小时内被修改过”。因此compinit，每天读取一次完整数据，其余时间读取缓存数据
+    # rm -f ~/.zcompdump*; exec zsh    保存完 .zshrc 后，你必须手动强制清除一次缓存，让它重新构建 .zcompdump
+    autoload -Uz compinit
+    if [[ -n ~/.zcompdump(#qNmh-24) ]]; then
+        compinit -C
+    else
+        compinit
+    fi
+#==============================第三大类：单独处理 在zsh-autocomplete 插件无法涉及到的部分 无 zsh 补全脚本但有--help信息
+# _gnu_generic 是 Zsh 极为强大的内置工具。它的作用是：当发现某个命令没有专门的补全脚本时，它会自动在后台悄悄运行该命令的 --help，
+# 并通过正则匹配动态提取出所有的 --load-sa、--restart-service、-m 等参数，实时喂给 zsh-autocomplete 或 fzf-tab
+    # 【关键：必须在 compinit 之后注入】
+    # yabai 官方没有随 Homebrew 自动分发 Zsh 补全脚本
+    # 强制让 yabai 解析自身的 --help
+    compdef _gnu_generic yabai
+    # 2. 解决 rm 被接管后的参数提示
+    # 因为系统的 compinit 已经提前将 _rm（内置的 rm 补全脚本）死死地绑定在了 rm 这个命令字上
+    # 强制让 rm 命令在补全时，通过运行它自身的 --help（即 rm-safely --help）来动态提取参数
+    compdef _gnu_generic rm
+
+    compdef _gnu_generic gpk
+    compdef _gnu_generic container
+
+
+
+
+    # 3. 核心：将补全函数 _cs_completion 注册绑定到你的自定义命令 cs 上 自己编写的zsh 函数 中的 zsh智能补全脚本
+    # 注意 自编写的functions在后面才加载进来， 所以 要在 functions文件夹中加载
+    # 如果你把 _cs_completion 写在 cs 脚本里，compinit 扫描到这里时会自动让它对齐，
+    # 为了保险，也可以在这里显式再锁死一次：
+    if whence _cs_completion &>/dev/null; then
+        compdef _cs_completion cs
+    fi
+    # 4. 加载插件
+    source ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fzf-tab/fzf-tab.plugin.zsh
+fi
+
+
+
+# 先 加载 基础增强与历史工具
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+ENABLE_CORRECTION="true"
+source "$HOME/.rm-safely" >/dev/null 2>&1
+eval "$(atuin init zsh)"
+eval "$(/opt/homebrew/bin/zsh-patina activate)"
+[ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env"
+
+source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+
+# 提前加载 bsh
+#source $(brew --prefix bsh)/share/bsh/bsh_init.zsh # 正式版之后， 正式卸载这个
+# https://github.com/karthikeyjoshi/bsh 根据 文档进行卸载
+
+# 把这三行放在本段的最后加载
+source /opt/homebrew/share/zsh-you-should-use/you-should-use.plugin.zsh
+#source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh  记得 27 正式版后卸载这个
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# 智能路径跳转
+eval "$(zoxide init zsh)"
+
+
+# 配置其行为：同时在下方展示历史记录和补全菜单，并且永不闪烁
+zstyle ':completion:*' list-grouped false
+zstyle ':completion:*' menu select
+
+
+
+
+# =========================== 6. 别名与函数加载 ===========================
+if [ -d ~/.zsh/aliases ]; then
+    for aliases_files in ~/.zsh/aliases/*.zsh; do
+        source "$aliases_files"
+    done
+fi
+
+
+# 快捷别名
+alias ppath='echo $PATH | tr ":" "\n"'
+alias reload='source ~/.zshrc'
+alias brewup='brew_update'
+alias rmbuild='set -f; rm_build *'
+alias historylist='atuin history list --format "{time} - {duration} - {command}"'
+# alias cs='fortune | cowsay' 弃用 ，纯随机存在重复的可能，通过更智能的同名函数取代
+alias ninja8='cmake .. -G Ninja && cmake --build . -j 8'
+alias grep='grep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn}'
+alias fzf='fzf --style full --preview "bat --color=always --style=numbers --line-range=:500 {}" --bind "focus:transform-header:file --brief {}"'
+alias serve='python3 -m http.server 8000'
+alias sniff='sudo tcpdump -i any -n -s 0 -vv'
+alias weather="curl -s 'wttr.in/Austin?0&n&Q&lang=en&columns=80'"
+alias shrug='echo "¯\\_(ツ)_/¯"'
+alias showgpt="list_chatgpt_zips"
+alias list-disks='lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT,LABEL'
+alias zram-info='watch -n 1 "free -h; echo; zramctl; echo; swapon --show"'
+alias lipo='/usr/bin/lipo'
+alias vsc="code"
+alias zd="zed"
+alias awk='gawk'  #使用Linux版本的awk 文本处理工具
+
+# =========================== 7. ZSH 交互选项与按键设置 ===========================
+# 保持你偏好的编辑模式（如果你想用 Vi 模式，保留下面的 bindkey -v；如果用标准模式，改回 bindkey -e）
+bindkey -v
+
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+HIST_STAMPS="yyyy-MM-dd"
+
+
+# 历史记录选项
+setopt appendhistory HIST_IGNORE_DUPS HIST_IGNORE_ALL_DUPS HIST_SAVE_NO_DUPS HIST_IGNORE_SPACE
+setopt AUTO_LIST AUTO_MENU bg_nice
+unsetopt auto_cd
+
+# 补全样式设置
+zstyle ':completion:*' menu select
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' special-dirs true
+zstyle ':completion:*' complete-all true
+zstyle ':completion:*' accept-exact true
+zstyle ':completion:*' verbose true
+zstyle ':completion:*' format '%B%d%b'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+zstyle ':completion:*:*:*:*:processes' command "ps -u $USER -o pid,user,comm -w -w"
+
+# -------------------------------------------------------------------
+# 【核心修复】多重保险：彻底解决菜单选中、Vi 模式下回车直接执行的问题
+# -------------------------------------------------------------------
+zmodload zsh/complist
+
+# 确保在原生的 Zsh 补全菜单里，回车（^M）和小键盘回车（^J）只是“接受放入命令行”，绝不执行
+bindkey -M menuselect '^M' accept-line
+bindkey -M menuselect '^J' accept-line
+
+# 针对 Vi 模式（vicmd/viins）补充方向键绑定，防止因为启用 Vi 模式导致方向键行为异常
+bindkey -M viins '^[[A' up-line-or-history
+bindkey -M viins '^[[B' down-line-or-history
+bindkey -M vicmd '^[[A' up-line-or-history
+bindkey -M vicmd '^[[B' down-line-or-history
+
+# 拦截普通的常规映射，确保普通上下翻历史命令时也是“安全停靠”
+bindkey '^[[A' up-line-or-history
+bindkey '^[[B' down-line-or-history
+# bindkey '^[[Z' reverse-menu-complete
+# bindkey '^I' expand-or-complete
+
+
+# -------------------------------------------------------------------
+
+
+# =========================== 8. Vi 模式与光标控制 (已移除顶部的 bindkey -v 冲突项) ===========================
+CURSOR_GOLD='\e]12;#D7AF00\a'
+CURSOR_BAR='\e[5q'
+
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]]; then
+    echo -ne "\e[2q$CURSOR_GOLD"
+  else
+    echo -ne "$CURSOR_BAR$CURSOR_GOLD"
+  fi
+}
+zle -N zle-keymap-select
+
+precmd() { echo -ne "$CURSOR_BAR$CURSOR_GOLD" }
+preexec() { echo -ne "$CURSOR_BAR$CURSOR_GOLD" }
+echo -ne "$CURSOR_BAR$CURSOR_GOLD"
+
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always $realpath'
+zstyle ':completion:*:descriptions' format '[%d]'
+
+# 允许 fzf-tab 使用连续补全的同时，不破坏上面的原生拦截规则
+zstyle ':completion:*' menu no
+
+zle_highlight+=(paste:none)
+
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+
+
+
+
+
+
+# =========================== 9. 主题与彩蛋 (必须放最后) ===========================
+# 1. 先显式指定主题名称（Oh My Zsh 需要这个变量来激活特定主题的逻辑）
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# 2. 加载 Powerlevel10k 主题的核心脚本
+source ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k/powerlevel10k.zsh-theme
+
+# 3. 最后加载 p10k 的个性化配置文件（这一步会彻底覆盖 OMZ 的默认样式，还你原本的提示符）
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
+export EDITOR="nvim" # export EDITOR="zed --wait"  export EDITOR="code --wait"
+
+# 每日箴言
+echo
+echo "=============== Quote Of The Day ==============="
+echo
+fortune | lolcat | cowsay
+echo
+echo "================================================"
+echo
+
+#最底部
+#zprof
+

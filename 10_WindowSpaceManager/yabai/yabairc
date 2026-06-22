@@ -1,0 +1,177 @@
+#!/usr/bin/env sh
+
+#
+# for this to work you must configure sudo such that
+# it will be able to run the command without password
+#
+# see this wiki page for information:
+#  - https://github.com/asmvik/yabai/wiki/Installing-yabai-(latest-release)#configure-scripting-addition
+#
+# Yabai - 适用 Mac Tahoe 26.0+的平铺窗口式管理器  。
+# 使用 二元空间分割算法 自动修改窗口布局， 专注窗口内容而不会受到干扰。
+#
+#
+# brew services restart yabai  NO !!!
+# yabai --restart-service  重启 yabai（重载配置）
+# yabai --start-service    启动 yabai（开机自启）
+# yabai --stop-service     停止 yabai 后台
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+#
+
+# 窗口聚焦时闪烁效果
+yabai -m signal --add label="flash_focus" event="window_focused" action="yabai -m window \$YABAI_WINDOW_ID --opacity 0.1 && sleep $(yabai -m config window_opacity_duration) && yabai -m window \$YABAI_WINDOW_ID --opacity 0.0"
+
+# 布局设置
+# bsp or float (default: float)
+yabai -m config layout bsp
+# Override default layout for space 2 only
+yabai -m config --space 2 layout float
+
+# 填充物和缝隙 Setting
+# 在平铺窗口时，yabai 可以保持窗口之间的间隙，并向菜单栏、Dock 栏和屏幕边缘留出边距。此设置可以针对每个空间进行单独定义
+# Set all padding and gaps to 20pt (default: 0)
+# yabai -m config top_padding    40  预留出 SketchyBar 的高度，防止 Yabai 的平铺窗口把 SketchyBar 挡住
+# yabai -m config bottom_padding 12
+# yabai -m config left_padding   12
+# yabai -m config right_padding  12
+# yabai -m config window_gap     12
+
+# Override gaps for space 2 only
+yabai -m config --space 2 window_gap 0
+
+# 分流比例
+#
+
+# on or off (default: off)
+yabai -m config auto_balance off
+# 如果自动平衡功能已禁用，则分割比例定义了创建新分割后每个窗口所占的空间比例。值为 0.5 表示旧窗口和新窗口占用相同空间；值为 0.2 表示旧窗口占用 20% 的可用空间，新窗口占用 80% 的可用空间。新窗口将插入到右侧或底部。该比例必须介于 0 和 1 之间
+#
+#Set split ratio to 0.5 (default: 0.5)
+yabai -m config split_ratio 0.5
+
+# 窗口修改
+#修改 macOS 显示窗口的方式
+# modify window shadows (default: on, options: on, off, float)
+# example: show shadows only for floating windows
+yabai -m config window_shadow float
+
+# window opacity (default: off)
+# example: render all unfocused windows with 90% opacity
+yabai -m config window_opacity on
+yabai -m config active_window_opacity 1.0
+yabai -m config normal_window_opacity 0.9
+
+# 状态栏
+#可以使用Übersicht和Sketchybar等第三方工具来创建自定义状态栏。
+#您还可以选择将自定义工具栏与space --toggle paddingyabai 提供的内边距功能（具体来说：）集成。请注意，您无需将此内边距包含在常规空间设置中。
+# add 20 padding to the top and 0 padding to the bottom of every space located on the main display
+yabai -m config external_bar main:20:0
+# add 20 padding to the top and bottom of all spaces regardless of the display it belongs to
+yabai -m config external_bar all:20:20
+
+
+
+
+
+# global settings
+yabai -m config                                 \
+    external_bar                 off:40:0       \
+    menubar_opacity              1.0            \
+    mouse_follows_focus          off            \
+    focus_follows_mouse          on            \
+    display_arrangement_order    default        \
+    window_origin_display        default        \
+    window_placement             second_child   \
+    window_insertion_point       focused        \
+    window_zoom_persist          on             \
+    window_shadow                off             \
+    skip_window_focus_animation  on            \
+    window_animation_duration    0.0            \
+    window_animation_easing      ease_out_circ  \
+    window_opacity_duration      0.0            \
+    active_window_opacity        1.0            \
+    normal_window_opacity        0.90           \
+    window_opacity               off            \
+    insert_feedback_color        0xffd75f5f     \
+    split_ratio                  0.50           \
+    split_type                   auto           \
+    auto_balance                 off            \
+    top_padding                  5             \
+    bottom_padding               0             \
+    left_padding                 23             \
+    right_padding                0             \
+    window_gap                   06             \
+    layout                       bsp            \
+    mouse_modifier               fn             \
+    mouse_action1                move           \
+    mouse_action2                resize         \
+    mouse_drop_action            swap
+
+#JankyBorders是一款轻量级工具，旨在为 macOS 14.0 及更高版本上的用户窗口添加彩色边框
+# 在 Yabai 窗口管理中启用 JankyBorders
+#
+#borders active_color=0xff78bb7b inactive_color=0xff494d64 width=5.0 &
+
+#sketchybar
+yabai -m config external_bar all:40:0
+
+
+
+
+
+
+
+
+# ==============================================================================
+# 禁用自动平铺 应用列表 ^ 和 $ 做 精确匹配，防止 误伤
+# 例如：^System Settings$ 表示只匹配 System Settings 应用
+# 如何精准 获取 软件的app 名称？
+# yabai -m query --windows
+# yabai -m query --windows | jq '.[].app'
+#
+# 如何 让配置 再次 生效 ？
+# yabai --restart-service
+# ==============================================================================
+# 禁用系统设置（System Settings）的自动平铺
+yabai -m rule --add app="^System Settings$" manage=off
+
+# 禁用访达（Finder）的自动平铺
+yabai -m rule --add app="^访达$" manage=off
+
+# 禁用加速猫的自动平铺
+yabai -m rule --add app="^加速猫$" manage=off
+
+# 禁用 UVR
+yabai -m rule --add app="^UVR$" manage=off
+
+yabai -m rule --add app="^iTerm2$" manage=off
+
+# 禁用活动监视器（Activity Monitor）
+yabai -m rule --add app="^Activity Monitor$" manage=off
+
+# 禁用第五人格 dwrg
+yabai -m rule --add app="^dwrg$" manage=off
+yabai -m rule --add app="^dwrg.exe$" manage=off
+# 禁用第五人格 CrossOver
+yabai -m rule --add app="^CrossOver$" manage=off
+
+# 禁用微信（WeChat）
+yabai -m rule --add app="^WeChat$" manage=off
+
+# 禁用Downie 4
+yabai -m rule --add app="^Downie 4$" manage=off
+
+
+# 禁用Geph
+yabai -m rule --add app="^Geph$" manage=off
+
+# 禁用一些有固定尺寸要求的工具（如 Calculator 计算器）
+yabai -m rule --add app="^Calculator$" manage=off
+
+# Focus space by index
+yabai -m space --focus 1
+
+
+echo "yabai configuration loaded.."
+
