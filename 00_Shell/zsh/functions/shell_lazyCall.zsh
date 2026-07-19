@@ -30,4 +30,3 @@ cd() {
   esac
   z "$*" || builtin cd "$*"
 }
-

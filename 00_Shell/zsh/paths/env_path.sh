@@ -7,14 +7,14 @@ export PATH="$HOME/bin:$HOME/.local/bin:/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/opt/findutils/libexec/gnubin:$PATH"
 export PATH="/opt/homebrew/opt/ccache/libexec:$PATH"
 export PATH="/opt/homebrew/opt/make/libexec/gnubin:$PATH"
-export PATH="/opt/homebrew/opt/binutils/bin:$PATH"
+#export PATH="/opt/homebrew/opt/binutils/bin:$PATH"
 export PATH="$HOME/.cache/lm-studio/bin:$PATH"
 
 # 镜像源设置
 
-export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.aliyun.com/homebrew/brew.git"
-export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.aliyun.com/homebrew/homebrew-bottles"
-export HOMEBREW_API_DOMAIN="https://mirrors.aliyun.com/homebrew-bottles/api"
+export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.ustc.edu.cn/brew.git"
+export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles"
+export HOMEBREW_API_DOMAIN="https://mirrors.ustc.edu.cn/homebrew-bottles/api"
 
 
 #终端文本处理工具 （Linux版本的awk, Mac自带awk古老）
@@ -52,6 +52,8 @@ export HOMEBREW_CURL_RETRIES=5
 export HOMEBREW_CURL_TIMEOUT=300
 export HOMEBREW_NO_ENV_HINTS=1
 export HOMEBREW_REQUIRE_TAP_TRUST=1
+export HOMEBREW_CACHE="$HOME/Library/Caches/Homebrew"
+
 
 # 语言配置
 export LC_ALL="en_US.UTF-8"
@@ -109,4 +111,3 @@ case "$(uname -s)" in
         echo "[INFO] Clipboard aliases not set: unsupported OS ($(uname -s))"
         ;;
 esac
-

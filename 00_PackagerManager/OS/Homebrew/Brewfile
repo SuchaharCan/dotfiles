@@ -1,32 +1,40 @@
+tap "akriaueno/tap"
 tap "asmvik/formulae", trusted: true
 tap "atlassian/acli", "https://github.com/atlassian/homebrew-acli.git", trusted: true
 tap "barutsrb/tap", "https://github.com/BarutSRB/homebrew-tap", trusted: true
 tap "bjarneo/cliamp", trusted: true
 tap "brew-gem/gems", trusted: true
+tap "caereforge/tap"
 tap "domcyrus/rustnet", trusted: true
 tap "elio-fm/elio", trusted: true
 tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae", trusted: true
+tap "ggbond268/mactools", trusted: true
 tap "jackielii/tap", trusted: true
 tap "k06a/tap", trusted: true
 tap "karthikeyjoshi/bsh", trusted: { formulae: ["bsh"] }
 tap "lifedever/tap", trusted: true
 tap "louisbrunner/valgrind", "https://github.com/LouisBrunner/homebrew-valgrind", trusted: true
-tap "marcelrgberger/tap", trusted: true
 tap "matthart1983/tap", trusted: true
 tap "metalbear-co/mirrord", trusted: true
-tap "michel-kraemer/zsh-patina"
+tap "michel-kraemer/zsh-patina", trusted: { formulae: ["zsh-patina"] }
 tap "neur0map/tap", trusted: true
 tap "nikitabobko/tap", trusted: true
 tap "notwadegrimridge/brew", trusted: true
 tap "oven-sh/bun", trusted: true
+tap "programmersd21/flow"
 tap "steipete/tap", trusted: true
+tap "suzhaharcan/libsuchaharcan", "git@codeberg.org:SuzhaharCan/libsuchaharcan.git", trusted: true
 tap "thousandflowers/raccoon", trusted: { formulae: ["rcc"] }
 tap "tracebar-app/tracebar", trusted: true
 tap "ttscoff/thelab", trusted: true
 tap "vaahoot/tap", trusted: true
+tap "vantroy/zigoku"
 tap "veirt/veirt", "https://github.com/Veirt/homebrew-veirt", trusted: true
+tap "yowainwright/tap"
 tap "zdk/tools", trusted: true
 tap "zimengxiong/tools", "https://github.com/ZimengXiong/homebrew-tools"
+# C++ Common Libraries
+brew "abseil"
 # Search tool like grep, but optimized for programmers
 brew "ack"
 # Open-source formatting library for C++
@@ -49,6 +57,8 @@ brew "libtiff"
 brew "alloy-analyzer"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
+# NaCl networking and cryptography library
+brew "libsodium"
 # YAML Parser
 brew "libyaml"
 # Library for command-line editing
@@ -59,12 +69,32 @@ brew "python@3.14"
 brew "tree"
 # Automate deployment, configuration, and upgrading
 brew "ansible"
+# Protocol buffers (Google's data interchange format)
+brew "protobuf"
+# Next generation open source RPC library and framework
+brew "grpc"
+# High-performance theorem prover
+brew "z3"
+# Next-gen compiler infrastructure
+brew "llvm"
+# Framework for scalable cross-language services development
+brew "thrift"
+# Columnar in-memory analytics layer designed to accelerate big data
+brew "apache-arrow"
+# Argument Parser for Modern C++
+brew "argparse"
 # C++ template library for linear algebra
 brew "eigen"
 # GNU multiple precision arithmetic library
 brew "gmp"
 # GNU compiler collection
 brew "gcc"
+# Asynchronous event library
+brew "libevent"
+# Optimized BLAS library
+brew "openblas"
+# PMIx Reference RunTime Environment
+brew "prrte"
 # C++ linear algebra library
 brew "armadillo"
 # Record and share terminal sessions
@@ -73,10 +103,18 @@ brew "asciinema"
 brew "asio"
 # Code searching, linting, rewriting
 brew "ast-grep"
+# Concurrency framework for C++11
+brew "asyncplusplus"
+# X.Org: Library for the X Input Extension
+brew "libxi"
+# C++14 lock-free queues
+brew "atomic_queue"
 # Improved shell history for zsh, bash, fish and nushell
 brew "atuin", restart_service: :changed
 # Automatic configure script builder
 brew "autoconf"
+# Automatic differentiation made easier for C++
+brew "autodiff"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.13"
 # Shell extension to jump to frequently used directories
@@ -89,8 +127,22 @@ brew "bandicoot"
 brew "bat"
 # Google's own build tool
 brew "bazel"
+# Arbitrary precision numeric processing language
+brew "bc"
+# Generate compilation database for clang tooling
+brew "bear"
 # C/C++ cryptography library
 brew "beecrypt"
+# High-performance, asynchronous messaging library
+brew "zeromq"
+# Header-only C++ binding for libzmq
+brew "cppzmq"
+# Behavior Trees Library in C++
+brew "behaviortree.cpp"
+# Implementation of malloc emphasizing fragmentation avoidance
+brew "jemalloc"
+# Multi-platform support library with a focus on asynchronous I/O
+brew "libuv"
 # Implementation of the DNS protocols
 brew "bind"
 # GNU binary tools for native development
@@ -99,6 +151,10 @@ brew "binutils"
 brew "bison"
 # Terminal based bit manipulator in ncurses
 brew "bitwise"
+# High-performance C++ math library for dense and sparse arithmetic
+brew "blaze"
+# Multi-dimensional array library for C++
+brew "blitz"
 # Collection of portable C++ source libraries
 brew "boost"
 # C++ build system
@@ -109,6 +165,8 @@ brew "botan"
 brew "boxes"
 # Install RubyGems as Homebrew formulae
 brew "brew-gem"
+# Fork of Paul Hsieh's Better String Library
+brew "bstring"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
 # C/C++ Build Toolchain
@@ -119,14 +177,30 @@ brew "c4core"
 brew "cabin"
 # Powerful, enterprise-ready, open source web server with automatic HTTPS
 brew "caddy", restart_service: :changed
+# Implementation of the Actor Model for C++
+brew "caf"
+# Data interchange format and capability-based RPC system
+brew "capnp"
 # Multi-shell multi-command argument completer
 brew "carapace"
+# DataStax C/C++ Driver for Apache Cassandra
+brew "cassandra-cpp-driver"
 # Modern, C++-native, test framework
 brew "catch2"
+# Linear programming solver
+brew "clp"
+# Mixed integer linear programming solver
+brew "cbc"
 # Object-file caching compiler wrapper
 brew "ccache"
 # Encrypt and decrypt files and streams
 brew "ccrypt"
+# Rich and complete approach to parallelism in C++
+brew "tbb"
+# Computational Geometry Algorithms Library
+brew "cgal"
+# File format designed to store large amounts of data
+brew "hdf5", link: false
 # Library of 2D and 3D vector, matrix, and math operations
 brew "imath"
 # Versatile and fast Unicode/ASCII/ANSI graphics renderer
@@ -141,16 +215,18 @@ brew "chuck"
 brew "clamav"
 # Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
 brew "clang-format"
-# High-performance theorem prover
-brew "z3"
-# Next-gen compiler infrastructure
-brew "llvm"
 # Simple tool for visualizing and analyzing C/C++ project include graph
 brew "clang-include-graph"
+# C++ YAML parser and emitter for YAML 1.2 spec
+brew "yaml-cpp"
 # Customizable automatic UML diagram generator for C++ based on Clang
 brew "clang-uml"
 # Run a SQL like language to perform queries on C/C++ files
 brew "clangql"
+# Simple and intuitive command-line parser for C++11
+brew "cli11"
+# Class Library for Numbers
+brew "cln"
 # Statistics utility to count lines of code
 brew "cloc"
 # Cross-platform make
@@ -167,62 +243,108 @@ brew "cocoapods"
 brew "colima"
 # Distributed, open source, package manager for C/C++
 brew "conan"
+# Fast multi-producer, multi-consumer lock-free concurrent queue for C++11
+brew "concurrentqueue"
 # GNU File, Shell, and Text utilities
 brew "coreutils"
+# Easy Rust and C/C++ Integration
+brew "corrosion"
 # Apjanke's fork of the classic cowsay project
 brew "cowsay"
+# Microsoft's C++ Guidelines Support Library
+brew "cpp-gsl"
+# C++ header-only HTTP/HTTPS server and client library
+brew "cpp-httplib"
+# Header-only PEG (Parsing Expression Grammars) library for C++
+brew "cpp-peglib"
 # Differentiation of C++ Algorithms
 brew "cppad"
 # Static analysis of C and C++ code
 brew "cppcheck"
+# Static code checker for C++
+brew "cpplint"
 # C++ 98/11/14/17/20 manual pages from cplusplus.com and cppreference.com
 brew "cppman"
+# Unit testing framework handling automated tests in C++
+brew "cpptest"
 # Simple, portable, and self-contained stacktrace library for C++11 and newer
 brew "cpptrace"
 # Unit testing framework for C++
 brew "cppunit"
 # C /C++ based unit xUnit test framework
 brew "cpputest"
+# C++ Requests, a spiritual port of Python Requests
+brew "cpr"
 # Securely send things from one computer to another
 brew "croc"
+# Fast and Easy to use microframework for the web
+brew "crow"
+# Free C++ class library of cryptographic schemes
+brew "cryptopp"
 # Template language for C++
 brew "ctemplate"
+# Compile-time regular expression matcher for C++
+brew "ctre"
 # Get a file from an HTTP, HTTPS or FTP server
 brew "curl"
+# C++ wrapper for libcURL
+brew "curlpp"
+# Lightweight C++ command-line option parser
+brew "cxxopts"
 # Portable Foreign Function Interface library
 brew "libffi"
 # Open-source, cross-platform JavaScript runtime environment
 brew "node"
 # Interactive Commitizen CLI that generate standardized commit messages
 brew "czg"
+# Dbg(…) macro for C++
+brew "dbg-macro"
 # Analyze C/C++ files for unnecessary headers
 brew "deheader"
+# Diff that understands syntax
+brew "difftastic"
+# High-performance C++ library for parallel programming
+brew "dispenso"
 # C++ library for machine learning
 brew "dlib"
 # Lightweight DNS forwarder and DHCP server
 brew "dnsmasq"
+# Feature-rich C++11/14/17/20/23 single-header testing framework
+brew "doctest"
 # CLI for interacting with Doppler secrets and configuration
 brew "doppler"
 # Generate documentation for several programming languages
 brew "doxygen"
+# Reference implementation of Dragonbox in C++
+brew "dragonbox"
 # Modern C++ web application framework
 brew "drogon"
+# Embeddable SQL OLAP Database Management System
+brew "duckdb"
 # Disk Usage/Free Utility - a better 'df' alternative
 brew "duf"
 # Utility to bundle libraries into executables for macOS
 brew "dylibbundler"
 # Collection of reusable C++ library artifacts developed at Facebook
 brew "folly"
+# Provides a network communication layer on top of UDP
+brew "enet"
 # C and C++ Task Scheduler for creating parallel programs
 brew "enkits"
 # Flexible C++ library for efficient mathematical optimization
 brew "ensmallen"
+# Fast and reliable entity-component system for C++
+brew "entt"
 # Speech synthesizer that supports more than hundred languages and accents
 brew "espeak-ng"
+# Event Dispatcher and callback list for C++
+brew "eventpp"
 # Modern, maintained replacement for ls
 brew "eza"
-# Powerful, lightweight programming language
-brew "lua"
+# Efficient similarity search and clustering of dense vectors
+brew "faiss"
+# Fast and exact implementation of the C++ from_chars functions for number types
+brew "fast_float"
 # Like neofetch, but much faster because written mostly in C
 brew "fastfetch"
 # Easiest way to build and release mobile apps
@@ -241,6 +363,14 @@ brew "figlet"
 brew "libogg"
 # Serialization library for C++, supporting Java, C#, and Go
 brew "flatbuffers"
+# Examines code and reports possible security weaknesses
+brew "flawfinder"
+# Fast entity component system for C & C++
+brew "flecs"
+# C library for number theory
+brew "flint"
+# Lightweight scripting language for querying databases
+brew "flux"
 # Infamous electronic fortune-cookie generator
 brew "fortune"
 # Generic library support script
@@ -279,6 +409,8 @@ brew "libsigc++"
 brew "glibmm"
 # C++ mathematics library for graphics software
 brew "glm"
+# Source code tag system
+brew "global"
 # Render markdown on the CLI
 brew "glow"
 # Toolkit for Chinese national cryptographic standards
@@ -287,20 +419,26 @@ brew "gmssl"
 brew "libgcrypt"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
+# Powerful, lightweight programming language
+brew "lua"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
 # C++ microbenchmark support library
 brew "google-benchmark"
 # Google Testing and Mocking Framework
 brew "googletest"
+# Version Control Visualization Tool
+brew "gource"
 # Multi-threaded malloc() and performance analysis tools
 brew "gperftools"
 # GNU PIC Utilities
 brew "gputils"
+# Modern, portable C++ wrappers for SIMD intrinsics
+brew "xsimd"
+# Efficient network analysis for Python 3
+brew "graph-tool"
 # Graph visualization software from AT&T and Bell Labs
 brew "graphviz"
-# Next generation open source RPC library and framework
-brew "grpc"
 # Numerical library for C and C++
 brew "gsl"
 # SOAP stub and skeleton compiler for C and C++
@@ -311,30 +449,62 @@ brew "gzip"
 brew "has"
 # World's fastest and most advanced password recovery utility
 brew "hashcat"
+# Post-modern modal text editor
+brew "helix"
+# Command-line hex viewer
+brew "hexyl"
+# Linear optimization software
+brew "highs"
+# C++ implementation of a fast hash map and hash set using hopscotch hashing
+brew "hopscotch-map"
+# C++ library for date and time operations based on <chrono>
+brew "howard-hinnant-date"
 # User-friendly cURL replacement (command-line HTTP client)
 brew "httpie"
 # Command-line benchmarking tool
 brew "hyperfine"
+# Library featuring parallel multigrid methods for grid problems
+brew "hypre"
 # Get events and tasks from the macOS calendar database
 brew "ical-buddy"
+# Network analysis package
+brew "igraph"
 # Library of persistent and immutable data structures written in C++
 brew "immer"
 # Tool to analyze #includes in C and C++ source files
 brew "include-what-you-use"
 # Activity indicators for modern C++
 brew "indicators"
+# Template engine for modern C++
+brew "inja"
 # CLI tool for searching and downloading app packages from the iOS App Store
 brew "ipatool"
 # Convert JPG images to ASCII
 brew "jp2a"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
+# Karlsruhe High Quality Partitioning
+brew "kahip"
+# Fast, modern C++ DSP framework
+brew "kfr"
+# C++ Performance Portability Ecosystem for parallel execution and abstraction
+brew "kokkos"
+# C++ library providing transducers
+brew "zug"
+# C++ lib for value-oriented design using unidirectional data-flow architecture
+brew "lager"
+# Linear Algebra PACKage
+brew "lapack"
 # Simple terminal UI for git commands
 brew "lazygit"
+# Header-only C++ library for L-BFGS and L-BFGS-B algorithms
+brew "lbfgspp"
 # Graphical front-end for GCC's coverage testing tool (gcov)
 brew "lcov"
 # Command-line, double-entry accounting tool
 brew "ledger"
+# LALR(1) parser generator like yacc or bison
+brew "lemon"
 # Key-value storage library with ordered mapping
 brew "leveldb"
 # Terminal file manager
@@ -355,6 +525,8 @@ brew "libgrape-lite"
 brew "libjson-rpc-cpp"
 # Library for MPD in the C, C++, and Objective-C languages
 brew "libmpdclient"
+# Collection of Sophisticated C++ Data Structures, Algorithms and Helpers
+brew "tlx"
 # Vorbis general audio compression codec
 brew "libvorbis"
 # Software library to decode tracked music files
@@ -363,6 +535,8 @@ brew "libopenmpt"
 brew "libphonenumber"
 # C++ connector for PostgreSQL
 brew "libpqxx"
+# Apache Kafka C/C++ library
+brew "librdkafka"
 # C++ implementation of STL for extra large data sets
 brew "libstxxl"
 # C interface for Google's OS library for Machine Intelligence
@@ -371,12 +545,14 @@ brew "libtensorflow"
 brew "libtins"
 # Comprehensive, modular and portable cryptographic toolkit
 brew "libtomcrypt"
+# Modern C++20 Unicode library
+brew "libunicode"
 # Library of exchange and correlation functionals for codes
 brew "libxc"
-# X.Org: Library for the X Input Extension
-brew "libxi"
 # C++ wrapper for libxml
 brew "libxml++"
+# GNOME XML library
+brew "libxml2"
 # LLM inference in C/C++
 brew "llama.cpp"
 # LLVM Project Linker
@@ -405,10 +581,26 @@ brew "make"
 brew "mas"
 # C++ Graphics Library for Data Visualization
 brew "matplotplusplus"
+# Cryptographic & SSL/TLS library
+brew "mbedtls"
+# CLI for Mermaid library
+brew "mermaid-cli"
+# Small build system for use with gyp or CMake
+brew "ninja"
+# Fast and user friendly build system
+brew "meson"
+# Wrapper around all package managers with a unifying CLI
+brew "meta-package-manager"
+# Free, lightweight, scalable C++ library for FEM
+brew "mfem"
+# Compact general purpose allocator
+brew "mimalloc"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
 # Scalable C++ machine learning library
 brew "mlpack"
+# Modern Linker
+brew "mold"
 # Deep clean and optimize your Mac
 brew "mole"
 # Collection of tools that nobody wrote when UNIX was young
@@ -419,8 +611,12 @@ brew "mprocs"
 brew "yt-dlp"
 # Media player based on MPlayer and mplayer2
 brew "mpv"
+# Library for a binary-based efficient data interchange format
+brew "msgpack"
 # 'traceroute' and 'ping' in a single tool
 brew "mtr"
+# QUIC transport protocol implementation
+brew "mvfst"
 # Open source relational database management system
 brew "mysql"
 # Interactive cheatsheet tool for the command-line
@@ -433,28 +629,50 @@ brew "neo4j"
 brew "neovim"
 # Utility for managing network connections
 brew "netcat"
+# Performance toolkit for large-scale network analysis
+brew "networkit"
 # Open source visual route tracking CLI tool
 brew "nexttrace"
 # HTTP(S) server and reverse proxy, and IMAP/POP3 proxy server
 brew "nginx"
-# Small build system for use with gyp or CMake
-brew "ninja"
+# Free/open-source library for nonlinear optimization
+brew "nlopt"
 # Port scanning utility for large networks
 brew "nmap"
+# Nanomsg-next-generation -- light-weight brokerless messaging
+brew "nng"
 # Retrieves currently playing media, and simulates media actions
 brew "nowplaying-cli"
+# C++ implementation of Raft core logic as a replication library
+brew "nuraft"
 # Manage multiple Node.js versions
 brew "nvm"
+# Light and powerful C++ web framework
+brew "oatpp"
 # JSON parser/generator for C++ with SAX and DOM style APIs
 brew "rapidjson"
 # High-level interpreted language for numerical computing
 brew "octave"
+# Simple and easy-to-use library to learn videogames programming
+brew "raylib"
+# Programming language with focus on simplicity, performance and modern systems
+brew "odin", args: ["HEAD"]
+# C++ standard library algorithms with support for execution policies
+brew "onedpl"
 # Command-line Git information tool
 brew "onefetch"
 # Open source computer vision library
 brew "opencv"
 # OpenBSD freely-licensed SSH connectivity tools
 brew "openssh"
+# Prometheus Client Library for Modern C++
+brew "prometheus-cpp"
+# OpenTelemetry C++ Client
+brew "opentelemetry-cpp"
+# Solver for mixed integer programming and mixed integer nonlinear programming
+brew "scip"
+# Google's Operations Research tools
+brew "or-tools"
 # Outputs current CPU temperature for OSX
 brew "osx-cpu-temp"
 # Terminal client for Ollama
@@ -463,46 +681,104 @@ brew "oterm"
 brew "pandoc"
 # Sliding, tiling window manager for MacOS
 brew "paneru"
+# Family of header-only, fast, memory-friendly C++ hashmap and btree containers
+brew "parallel-hashmap"
 # Password manager
 brew "pass"
+# Parsing Expression Grammar Template Library
+brew "pegtl"
+# Portable, Extensible Toolkit for Scientific Computation (real)
+brew "petsc"
 # General-purpose scripting language
 brew "php", restart_service: :changed
+# C++ header-only for Physics unit/quantity manipulation and conversion
+brew "physunits"
 # Execute binaries from Python packages in isolated environments
 brew "pipx"
+# Modern, fast, elegant HTTP + REST C++17 framework with pleasant API
+brew "pistache"
 # Easier way to include C code in your Go program
 brew "pkg-config-wrapper"
+# Draw UML diagrams
+brew "plantuml"
+# Portable, simple and extensible C++ logging library
+brew "plog"
 # C++ class libraries for building network and internet-based applications
 brew "poco"
 # PDF rendering library (based on the xpdf-3.0 code base)
 brew "poppler"
 # Object-relational database system
-brew "postgresql@17"
+brew "postgresql@17", restart_service: :changed
+# Collection of C++ HTTP libraries
+brew "proxygen"
 # Monitor data's progress through a pipe
 brew "pv"
 # Python version management
 brew "pyenv"
 # Bundle a Python application and all its dependencies
 brew "pyinstaller"
+# Easily download, build, install, upgrade, and uninstall Python packages
+brew "python-setuptools"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.11"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.12"
+# Library for quantitative finance
+brew "quantlib"
+# Modern C++ quantum computing library
+brew "quantum++"
+# C++17 Asynchronous Low Latency Logging Library
+brew "quill"
+# Experimental range library for C++14/17/20
+brew "range-v3"
 # Rsync for cloud storage
 brew "rclone"
+# Generate C-based recognizers from regular expressions
+brew "re2c"
+# Fast single-producer, single-consumer lock-free queue for C++
+brew "readerwriterqueue"
+# Reddit, refined for the terminal
+brew "reddix"
 # Persistent key-value database, with built-in net interface
 brew "redis"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
+# C++ implementation of a fast hash map and hash set
+brew "robin-map"
+# Embeddable, persistent key-value store for fast storage
+brew "rocksdb"
 # Utility that provides fast incremental file transfer
 brew "rsync"
+# C++ Reflection Library
+brew "rttr"
 # Install Ruby, JRuby, Rubinius, TruffleRuby, or mruby
 brew "ruby-install"
+# Safe, concurrent, practical language
+brew "rust"
 # Experimental Rust compiler front-end for IDEs
 brew "rust-analyzer"
+# Rust toolchain installer
+brew "rustup"
+# Computational geometry and spatial indexing on the sphere
+brew "s2geometry"
 # CLI sampling profiler
 brew "samply"
+# Scanf for modern C++
+brew "scnlib"
+# Package for graph partitioning, graph clustering, and sparse matrix ordering
+brew "scotch"
+# Optimized C library for EC operations on curve secp256k1
+brew "secp256k1"
+# Sentry SDK for C, C++ and native applications
+brew "sentry-native"
+# Modern C++ library for sequence analysis
+brew "seqan3"
+# Single-header bitpacking serializer for C++ aimed at game networking
+brew "serialize"
 # 7-Zip is a file archiver with a high compression ratio
 brew "sevenzip"
+# Multi-media library with bindings for multiple languages
+brew "sfml"
 # Prints a steam locomotive if you type sl instead of ls
 brew "sl"
 # Monitors sleep, wakeup, and idleness of a Mac
@@ -511,8 +787,12 @@ brew "sleepwatcher", restart_service: :changed
 brew "sniffnet"
 # SOcket CAT: netcat on steroids
 brew "socat"
+# Database access library for C++
+brew "soci"
 # Audio processing library
 brew "sound-touch"
+# C++20-like span for C++98, C++11 and later in a single-file header-only library
+brew "span-lite"
 # Sparklines for the shell
 brew "spark"
 # Super fast C++ logging library
@@ -531,6 +811,8 @@ brew "swiftlint"
 brew "swig"
 # Open source continuous file synchronization application
 brew "syncthing"
+# Tools for market analysis
+brew "ta-lib"
 # Audio metadata library
 brew "taglib"
 # Easiest, most secure way to use WireGuard and 2FA
@@ -539,24 +821,30 @@ brew "tailscale"
 brew "taskflow"
 # Command-line packet analyzer
 brew "tcpdump"
+# Very fast implementation of tldr in Rust
+brew "tealdeer"
 # Telegram Messenger downloader/tools written in Golang
 brew "telegram-downloader"
 # General purpose fuzzy finder TUI
 brew "television"
 # User interface to the TELNET protocol
 brew "telnet"
+# GUI library for use with sfml
+brew "tgui"
 # Code-search similar to ack
 brew "the_silver_searcher"
-# Framework for scalable cross-language services development
-brew "thrift"
 # C++11/14/17 std::expected with functional-style extensions
 brew "tl-expected"
 # Official tldr client written in Rust
-brew "tlrc"
+brew "tlrc", link: false
 # Terminal multiplexer
 brew "tmux"
+# Program that allows you to count code, quickly
+brew "tokei"
 # Implementation of Java Servlet and JavaServer Pages
 brew "tomcat"
+# Header-only TOML config file parser and serializer for C++17
+brew "tomlplusplus"
 # Upgrade all the things
 brew "topgrade"
 # Real-time, nanosecond resolution frame profiler
@@ -567,6 +855,8 @@ brew "trash"
 brew "tre"
 # Cozy typing speed tester in terminal
 brew "typioca"
+# Unidata unit conversion library
+brew "udunits"
 # List detailed info about USB devices
 brew "usbutils"
 # Cross-platform Rust rewrite of the GNU coreutils
@@ -579,14 +869,22 @@ brew "vcpkg"
 brew "vim"
 # Watch files and take action when they change
 brew "watchman"
+# WebSocket++ is a cross platform header only C++ library
+brew "websocketpp"
 # Internet file retriever
 brew "wget"
 # Little beautifier tool for xcodebuild
 brew "xcbeautify"
 # Check your $HOME for unwanted files and directories
 brew "xdg-ninja"
+# Validating XML parser
+brew "xerces-c"
 # Friendly and fast tool for sending HTTP requests
 brew "xh"
+# Multi-dimensional arrays with broadcasting and lazy computing
+brew "xtensor"
+# Collection of modern C++ libraries
+brew "yalantinglibs"
 # Blazing fast terminal file manager written in Rust, based on async I/O
 brew "yazi"
 # Programming language designed for robustness, optimality, and clarity
@@ -601,14 +899,18 @@ brew "zoxide"
 brew "zsh-autocomplete"
 # Additional completion definitions for zsh
 brew "zsh-completions"
+# Blazingly fast Zsh syntax highlighter
+brew "zsh-patina"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
 # ZSH plugin that reminds you to use existing aliases for commands you just typed
 brew "zsh-you-should-use"
+# Show where a command on your system really comes from
+brew "akriaueno/tap/why", trusted: true
 # A tiling window manager for macOS based on binary space partitioning.
 brew "asmvik/formulae/yabai", args: ["HEAD"], trusted: true
 # A retro terminal music player inspired by Winamp 2.x
-brew "bjarneo/cliamp/cliamp"
+brew "bjarneo/cliamp/cliamp", trusted: true
 brew "brew-gem/gems/gem-doing"
 # High-performance, cross-platform network monitoring tool with TUI
 brew "domcyrus/rustnet/rustnet"
@@ -627,23 +929,29 @@ brew "matthart1983/tap/netwatch", trusted: true
 # Single-host system diagnostics TUI — sibling to netwatch
 brew "matthart1983/tap/syswatch"
 # Connect your local process and your cloud environment
-brew "metalbear-co/mirrord/mirrord"
-# $ A blazingly fast Zsh syntax highlighter
-brew "michel-kraemer/zsh-patina/zsh-patina", trusted: true
-# TUI dashboard that unifies 42 package managers into one searchable view
+brew "metalbear-co/mirrord/mirrord", trusted: true
+# TUI dashboard that unifies 43 package managers into one searchable view
 brew "neur0map/tap/gpk", trusted: true
 # Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
 brew "oven-sh/bun/bun"
+# Real-time network bandwidth monitor for the terminal
+brew "programmersd21/flow/flow", trusted: true
 # Fast CLI for Apple Reminders
 brew "steipete/tap/remindctl"
 # Command-line ElevenLabs TTS with mac-style flags
 brew "steipete/tap/sag"
 # Spectral visualization CLI for audio files
 brew "steipete/tap/songsee"
+# C++23 modules toolkit + GM/T crypto + sc-cmake CMakeLists templates
+brew "suzhaharcan/libsuchaharcan/suchaharcan"
 # Unified Markdown processor supporting CommonMark, GFM, MultiMarkdown, and Kramdown
 brew "ttscoff/thelab/apex"
 # A macOS CLI tool that blocks distracting domains
 brew "vaahoot/tap/zen-mode"
+# Terminal anime browser & player
+brew "vantroy/zigoku/zigoku", trusted: true
+# Track package-manager and global CLI usage
+brew "yowainwright/tap/diu", trusted: true
 # rm-safely - command that moves files to trash before deletion
 brew "zdk/tools/rm-safely"
 # Privacy-focused app for managing your finances
@@ -656,12 +964,8 @@ cask "alt-tab"
 cask "anki"
 # Motion graphics program for music visualisations
 cask "astrofox"
-# Auto-update Homebrew + GUI store, snapshots, and cross-Mac restore
-cask "marcelrgberger/tap/autobrew"
 # Compact TeX distribution as alternative to the full TeX Live / MacTeX
 cask "basictex"
-# Display management tool
-cask "betterdisplay"
 # Desktop password and login vault
 cask "bitwarden"
 # Virtual Audio Driver
@@ -670,12 +974,14 @@ cask "blackhole-2ch"
 cask "blockblock"
 # App for testing HTTP/REST endpoints
 cask "cocoarestclient"
-# OpenAI's coding agent that runs in your terminal
-cask "codex"
+# Reverse engineering platform powered by Rizin
+cask "cutter"
 # Generate a timeline of your day, automatically
 cask "dayflow"
 # Universal database tool and SQL client
 cask "dbeaver-community"
+# Database version management tool
+cask "dbngin"
 # Utilities designed to make common development tasks easier
 cask "devtoys"
 # All-in-one toolbox for developers
@@ -706,6 +1012,8 @@ cask "keyclu"
 cask "knockknock"
 # Lyrics for iTunes, Spotify, Vox and Audirvana Plus
 cask "lyricsx"
+# Menu bar toolbox
+cask "mactools"
 # Efficiency tool for automatically closing apps when they are not in use
 cask "magicquit"
 # Extensible two-pane file manager
@@ -752,29 +1060,40 @@ cask "qt-creator"
 cask "quicksilver"
 # Simple menu bar app to view and interact with reminders
 cask "reminders-menubar"
+# Open source virtual/remote desktop application
+cask "rustdesk"
 # Simple hotkey daemon written in Zig
 cask "jackielii/tap/skhd-zig", trusted: true
 # Team communication and collaboration software
 cask "slack"
 # Displays all open files and sockets in use by all running processes
 cask "sloth"
+# Software update framework for Cocoa developers
+cask "sparkle"
 # System monitor for the menu bar
 cask "stats"
 # Window manager
 cask "swift-shift"
 # Command-drag macOS windows into lightweight tab stacks
 cask "zimengxiong/tools/tabbed", trusted: true
+# One Mac timeline for everything your stack does
+cask "caereforge/tap/tempo", trusted: true
 # Continuous graphical traceroute monitoring in your menubar
 cask "tracebar-app/tracebar/tracebar"
+# Utility that shows the latest app updates
+cask "updatest"
 # Voice to text app
 cask "voiceink"
+# Your effortless, reliable information organiser
+cask "yojimbo"
 cargo "cargo-update"
 cargo "cottage"
 cargo "diskwatch"
 cargo "envtrace"
-cargo "git-cliff"
 cargo "lyric-tui"
+cargo "nuls"
 cargo "stochos"
+uv "meta-package-manager"
 uv "pdf2zh-next"
 npm "@vue/cli"
 npm "node-gyp"

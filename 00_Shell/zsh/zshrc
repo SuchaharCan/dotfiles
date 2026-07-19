@@ -1,7 +1,4 @@
-#
-
-
-#~/.zshrc (Tahoe Mac mini - songhoujin)
+# ~/.zshrc (Tahoe Mac mini - songhoujin)
 # ⭐✅ 更高级的配置 忘记在哪个配置文件了.需要手动寻找
 # ZSH 启动时,自动加载的核心配置文件,在用户主目录下, 负责初始化交互式shell环境.
 # 按照 顺序执行其中 定义的[环境变量设置] [别名声明] [函数定义] [模块加载] [路径配置] , 直接影响终端的行为逻辑 与 使用效率.
@@ -280,3 +277,10 @@ echo
 #最底部
 #zprof
 
+PATH="/Users/songhoujin/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/Users/songhoujin/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/Users/songhoujin/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/Users/songhoujin/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/songhoujin/perl5"; export PERL_MM_OPT;
+
+[ -f "/Users/songhoujin/.ghcup/env" ] && . "/Users/songhoujin/.ghcup/env" # ghcup-env

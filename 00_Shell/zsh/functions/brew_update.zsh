@@ -4,7 +4,7 @@
 # 修复：解决外层 --force 无法透传导致底层原生 brew 被二次拦截的问题。
 
 # 全局强更标记，默认为 0（不强更）
-typeset -g _BREWUP_FORCE_ACTIVE=0
+typeset -g _BREWUP_FORCE_ACTIVE=1
 
 # ==========================================
 # 模块 1：升级条目 (Core Upgrade Logic)
@@ -23,16 +23,16 @@ _execute_brew_upgrades() {
     yes | brew upgrade --cask --greedy
      brew upgrade --fetch-HEAD LouisBrunner/valgrind/valgrind  # 2026-06-19 暂时屏蔽，因为还不支持Mac27
 
-    echo -e "${BOLD}002: update rust${RESET}"
+    echo -e "${BOLD}002: update rust${RESET}" | lolcat
     rustup update
 
-    echo -e "${BOLD}003: update Apple container${RESET}"
+    echo -e "${BOLD}003: update Apple container${RESET}" | lolcat
     sudo /usr/local/bin/update-container.sh
 
     #_execute_gpk_upgrades  #gpk更新环节
     _execute_system_upgrades  # topgrade 托管升级
-    echo "Squirrel 是否有更新 - https://github.com/rime/squirrel/releases "
-    echo "Yabai 是否有更新 - https://github.com/asmvik/formulae/tree/master/yabai"
+    echo "Squirrel 是否有更新 - https://github.com/rime/squirrel/releases " | lolcat
+    echo "Yabai 是否有更新 - https://github.com/asmvik/formulae/tree/master/yabai" | lolcat
     echo "更新完成"
 }
 
@@ -200,7 +200,7 @@ _execute_gpk_upgrades() {
     local BOLD="\e[1m"
     local RESET="\e[0m"
 
-    echo -e "\n${BOLD}004: update gpk & specific managers (gem, npm, cargo, nuget)${RESET}"
+    echo -e "\n${BOLD}004: update gpk & specific managers (gem, npm, cargo, nuget)${RESET}" | lolcat
 
     # 1. 尝试更新 gpk 本身（忽略可能发生的 403 报错）
     gpk update 2>/dev/null
@@ -208,7 +208,7 @@ _execute_gpk_upgrades() {
     # 2. 检索待升级内容并过滤出指定 SOURCE (gem, npm, cargo, nuget) 的包名
     # 使用 awk 匹配第三列为指定源的行，并打印第一列的包名
     local target_packages
-    target_packages=($(gpk outdated 2>/dev/null | awk '$2 ~ /^(gem|npm|cargo|nuget)$/ {print $1}'))
+    target_packages=($(gpk outdated 2>/dev/null | awk '$2 ~ /^(gem|cargo|nuget)$/ {print $1}'))
 
     # 3. 如果有满足条件的包，则执行批量升级
     if [[ ${#target_packages[@]} -gt 0 ]]; then
@@ -246,4 +246,3 @@ _execute_system_upgrades() {
         --only cargo \
         --only pipx
 }
-

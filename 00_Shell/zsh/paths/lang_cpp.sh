@@ -11,10 +11,13 @@ export CXX="$LLVM_ROOT/bin/clang++"
 # 修正 LDFLAGS 和 CPPFLAGS 累加，防止覆盖
 # 3. LDFLAGS 累加 (注意：新路径放在最前面)
 export LDFLAGS="-L$LLVM_ROOT/lib/c++ -L$LLVM_ROOT/lib/unwind -lunwind $LDFLAGS"
-export LDFLAGS="-L$LLVM_ROOT/lib -L$BINUTILS_ROOT/lib -L$RUBY_ROOT/lib $LDFLAGS"
+export LDFLAGS="-L$LLVM_ROOT/lib -L$BINUTILS_ROOT/lib $LDFLAGS"
+# RUBY_ROOT 为空时勿追加，否则会变成错误的 -L/lib
+[[ -n "${RUBY_ROOT:-}" ]] && export LDFLAGS="-L$RUBY_ROOT/lib $LDFLAGS"
 
 # 4. CPPFLAGS 累加
-export CPPFLAGS="-I$LLVM_ROOT/include -I$BINUTILS_ROOT/include -I$RUBY_ROOT/include $CPPFLAGS"
+export CPPFLAGS="-I$LLVM_ROOT/include -I$BINUTILS_ROOT/include $CPPFLAGS"
+[[ -n "${RUBY_ROOT:-}" ]] && export CPPFLAGS="-I$RUBY_ROOT/include $CPPFLAGS"
 export CPPFLAGS="-D_LIBCPP_DISABLE_AVAILABILITY $CPPFLAGS"
 
 

@@ -4,4 +4,3 @@ alias ga="git add"
 alias gs="git status"
 alias gd="git diff"
 alias gb="git branch"
-

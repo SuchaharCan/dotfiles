@@ -16,4 +16,3 @@ rm_build() {
         echo "当前目录路径中不包含 'build'，不执行 rm 命令。"
     fi
 }
-

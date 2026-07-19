@@ -20,4 +20,3 @@ alias dl="cd ~/Downloads"
 
 # 在 Mac 终端看到带有图标、Git 状态、层级树状图的超硬核文件列表
  alias ll="eza --long --tree --level=2 --git --icons"
-
