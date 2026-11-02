@@ -284,3 +284,5 @@ PERL_MB_OPT="--install_base \"/Users/songhoujin/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/Users/songhoujin/perl5"; export PERL_MM_OPT;
 
 [ -f "/Users/songhoujin/.ghcup/env" ] && . "/Users/songhoujin/.ghcup/env" # ghcup-env
+# direnv — load .envrc when entering directories
+eval "$(direnv hook zsh)"
